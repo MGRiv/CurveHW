@@ -22,7 +22,7 @@ def add_edge( matrix, x0, y0, z0, x1, y1, z1 ):
     add_point( matrix, x0, y0, z0 )
     add_point( matrix, x1, y1, z1 )
 
-def add_point( matrix, x, y, z=0 ):
+def add_point( matrix, x, y, z):
     matrix.append( [x, y, z, 1] )
 
 
