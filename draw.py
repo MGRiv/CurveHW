@@ -33,7 +33,7 @@ def draw_lines( matrix, screen, color ):
     while(l - c > 1):
         p = matrix[c]
         e = matrix[c + 1]
-        draw_line(screen,int((p[0] - p[2]) * math.sqrt(3)/2),int(p[1] - .5 * (p[0] + p[2])),int((e[0] - e[2]) * math.sqrt(3)/2),int(e[1] - .5 * (e[0] + e[2])),color)
+        draw_line(screen,int(p[0]),int(p[1]),int(e[0]),int(e[1]),color)
         c += 2
 
 def add_edge( matrix, x0, y0, z0, x1, y1, z1 ):
