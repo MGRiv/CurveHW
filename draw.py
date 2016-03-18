@@ -3,7 +3,11 @@ from matrix import *
 import math
 
 def add_circle( points, cx, cy, cz, r, step ):
-    pass
+    h = make_rotZ()
+    t = 0
+    xp = cx + r
+    yp = cy
+    
 
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
     m = [[x0,x2,x1,x3],[y0,y2,y1,y3]]
