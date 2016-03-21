@@ -8,6 +8,7 @@ def parse_file( fname, points, transform, screen, color ):
     l = r.split('\n')
     c = 0
     while(c < len(l)):
+        print str(c + 1) +"\n"
         if(l[c] == "ident"):
             ident(transform)
         elif(l[c] == "apply"):
@@ -18,32 +19,35 @@ def parse_file( fname, points, transform, screen, color ):
             display(screen)
         else:
             c += 1
+            t = l[c].split(' ')
             if(l[c - 1] == "line"):
-                add_edge(points,int(l[c][0]),int(l[c][1]),int(l[c][2]),int(l[c][3]),int(l[c][4]),int(l[c][5]))
+                add_edge(points,int(t[0]),int(t[1]),int(t[2]),int(t[3]),int(t[4]),int(t[5]))
             elif(l[c - 1] == "circle"):
-                add_cirlce(points,int(l[c][0]),int(l[c][1]),0,,int(l[c][2]),0.02)
+                add_circle(points,int(t[0]),int(t[1]),0,int(t[2]),0.02)
             elif(l[c - 1] == "hermite"):
-                add_curve(points,int(l[c][0]),int(l[c][1]),int(l[c][2]),int(l[c][3]),int(l[c][4]),int(l[c][5]),int(l[c][6]),int(l[c][7]),0.02,0)
+                add_curve(points,int(t[0]),int(t[1]),int(t[2]),int(t[3]),int(t[4]),int(t[5]),int(t[6]),int(t[7]),0.02,0)
             elif(l[c - 1] == "bezier"):
-                add_curve(points,int(l[c][0]),int(l[c][1]),int(l[c][2]),int(l[c][3]),int(l[c][4]),int(l[c][5]),int(l[c][6]),int(l[c][7]),0.02,1)
+                add_curve(points,int(t[0]),int(t[1]),int(t[2]),int(t[3]),int(t[4]),int(t[5]),int(t[6]),int(t[7]),0.02,1)
             elif(l[c - 1] == "scale"):
-                t = make_scale(int(l[c][0]),int(l[c][1]),int(l[c][2]))
-                matrix_mult(t,transform)
+                q = make_scale(float(t[0]),float(t[1]),float(t[2]))
+                matrix_mult(q,transform)
             elif(l[c - 1] == "translate"):
-                t = make_translate(int(l[c][0]),int(l[c][1]),int(l[c][2]))
-                matrix_mult(t,transform)
+                q = make_translate(int(t[0]),int(t[1]),int(t[2]))
+                matrix_mult(q,transform)
             elif(l[c - 1] == "xrotate"):
-                t = make_rotX(int(l[c][0]))
-                matrix_mult(t,transform)
+                q = make_rotX(float(t[0]))
+                matrix_mult(q,transform)
             elif(l[c - 1] == "yrotate"):
-                t = make_rotY(int(l[c][0]))
-                matrix_mult(t,transform)
+                q = make_rotY(float(t[0]))
+                matrix_mult(q,transform)
             elif(l[c - 1] == "zrotate"):
-                t = make_rotZ(int(l[c][0]))
-                matrix_mult(t,transform)
+                q = make_rotZ(float(t[0]))
+                matrix_mult(q,transform)
             elif(l[c - 1] == "save"):
-                save_ppm(screen,l[c][0])
-                
+                save_ppm(screen,t[0])
+        c+=1
+    f.close()    
                 
 
-##draw_line(screen,int((int(l[c][0]) - int(l[c][2])) * math.sqrt(3)/2),int(int(l[c][1]) - .5 * (int(l[c][0]) + int(l[c][2]))),int((int(l[c][3]) - int(l[c][5])) * math.sqrt(3)/2),int(int(l[c][4]) - .5 * (int(l[c][3]) + int(l[c][5]))),color)
+
+

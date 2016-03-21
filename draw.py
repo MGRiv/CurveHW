@@ -3,29 +3,43 @@ from matrix import *
 import math
 
 def add_circle( points, cx, cy, cz, r, step ):
-    h = make_rotZ()
+    x0 = cx + r
+    y0 = cy
     t = 0
-    xp = cx + r
-    yp = cy
+    while(t <= 1):
+        x1 = cx + r * math.cos(2 * math.pi * t)
+        y1 = cy + r * math.sin(2 * math.pi * t)
+        add_edge(points, x0, y0, cz, x1, y1, cz)
+        x0 = x1
+        y0 = y1
+        t += step
+    add_edge(points,cx + r, cy,cz, x0, y0,cz)
     
 
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
-    m = [[x0,x2,x1,x3],[y0,y2,y1,y3]]
-    if(curve_type == 0):
-        h = [[2,-3,0,1],[-2,3,0,0],[1,-2,1,0],[1,1,0,0]]
-        matrix_mult(h,m)
+    m = []
+    dx = 0
+    dy = 0
+    if curve_type == 0:
+        m = [[x0, x2, x1 - x0, x3 - x2], [y0, y2, y1 - y0, y3 - y2]]
+        matrix_mult([[2, -3, 0, 1], [-2, 3, 0, 0], [1, -2, 1, 0], [1, -1, 0, 0]], m)
+        dx = x2
+        dy = y2
     else:
-        h = [[-1,3,-3,1],[3,-6,3,0],[-3,3,0,0],[1,0,0,0]]
-        matrix_mult(h,m)
-    t = 0
+        m = [[x0, x1, x2, x3], [y0, y1, y2, y3]]
+        matrix_mult([[-1, 3, -3, 1], [3, -6, 3, 0], [-3, 3, 0, 0], [1, 0, 0, 0]], m)
+        dx = x3
+        dy = y3
     xp = x0
     yp = y0
+    t = 0
     while(t <= 1):
         add_point(points,xp,yp,0)
         xp = t * ( t * ( (m[0][0] * t) + m[0][1]) + m[0][2]) + m[0][3]
         yp = t * ( t * ( (m[1][0] * t) + m[1][1]) + m[1][2]) + m[1][3]
         add_point(points,xp,yp,0)
         t += step
+    add_edge(points,xp,yp,0,dx,dy,0)
         
         
 
